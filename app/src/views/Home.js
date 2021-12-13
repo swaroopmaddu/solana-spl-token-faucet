@@ -37,7 +37,13 @@ const Home = () => {
         };
         const [provider, connection] = GetProvider(wallet, network);
         const publicKey = provider.wallet.publicKey;
-        
+
+        const [inputValue, setInputValue] = useState('');
+
+        function updateInputValue(evt) {
+            setInputValue( evt.target.value );
+        }
+            
 
         async function onClick(event) {
             
@@ -52,8 +58,9 @@ const Home = () => {
         }
 
         async function dropMonkey(event) {
+
             try {
-                const result = await airdropSplTokens(1000, mktMintPk, mktMintPkBump ,wallet, network);
+                const result = await airdropSplTokens(inputValue, mktMintPk, mktMintPkBump ,wallet, network);
                 setRefresh(!refresh);
                 enqueueSnackbar("Airdrop successful.", { variant: 'success', autoHideDuration: 3000, });
             } catch (e) {
@@ -89,14 +96,14 @@ const Home = () => {
                                     </Typography>
                                     <Button fullWidth variant="outlined" onClick={onClick} disabled={!publicKey} >GET 1 SOL</Button>
                                     <Typography sx={{marginTop:2,fontSize: 18,fontWeight:800,color:'black' }} color="text.secondary" gutterBottom>
-                                        Monkey Tocken AIRDROP
+                                        Monkey Token AIRDROP
                                         </Typography>
                                         <Typography sx={{fontSize: 13,}} color="text.secondary" gutterBottom>
                                         Receive dummy SPL tokens, always coming from the same mint.                          
                                         </Typography>
                                         <Grid container spacing={2}>
                                             <Grid item xs={8}>
-                                            <TextField fullWidth type="number" id="outlined-basic"  variant="outlined"  />
+                                        <TextField fullWidth type="number" id="monkey-token" variant="outlined" value={inputValue} onChange={updateInputValue}/>
                                             </Grid>
                                             <Grid item xs={4}>
                                             <Button fullWidth size="large" onClick={dropMonkey} variant="outlined" disabled={!publicKey}>GET DUMMY</Button>

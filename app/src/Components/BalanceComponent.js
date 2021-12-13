@@ -53,8 +53,8 @@ const BalanceComponent = (props) => {
                 solBalance && 
                 <Box sx={{ my: 4 }}>
                     <Typography sx={{ my: 2 }} variant="h6">Network: {networkMap[props.network]}</Typography>
-                    <Typography variant="h6">Solana Balance: {solBalance} SOL</Typography>
-                    <Typography variant="h6">Monkey Token Balance: {mktBalance} MKT</Typography>
+                    <Typography variant="h6">Solana: {solBalance} SOL</Typography>
+                    <Typography variant="h6">Monkey Tokens: {mktBalance} MKT</Typography>
                 </Box>
             }
         </Box>
