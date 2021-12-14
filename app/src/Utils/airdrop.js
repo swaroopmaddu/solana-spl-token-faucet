@@ -52,6 +52,7 @@ export async function airdropSplTokens(amount, mintPda, mintPdaBump,wallet, netw
             console.log('success Airdrop successful!'+signature);
         } catch (err) {
             console.log('Error Airdrop failed!');
+            console.log(err);
             throw err;
         }
 }
