@@ -26,6 +26,8 @@ export async function airdropSplTokens(amount, mintPda, mintPdaBump,wallet, netw
         const program = new Program(idl, programID, provider);
         let amountToAirdrop = new BN(amount * 1000000);
 
+        console.log(`Airdrop ${amountToAirdrop} tokens to ${provider.wallet.publicKey}`);
+        
         let associatedTokenAccount = await Token.getAssociatedTokenAddress( ASSOCIATED_TOKEN_PROGRAM_ID, TOKEN_PROGRAM_ID, mintPda, provider.wallet.publicKey, );
 
         console.log("Program ID: ", program.programId.toBase58());
