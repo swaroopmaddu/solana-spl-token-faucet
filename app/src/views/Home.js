@@ -4,7 +4,7 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useWallet } from '@solana/wallet-adapter-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { WalletModalProvider, WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import { Card, Select } from '@mui/material';
 import MenuItem from '@mui/material/MenuItem';
@@ -17,6 +17,8 @@ import BalanceComponent from '../Components/BalanceComponent';
 import { mktMintPk, mktMintPkBump } from '../Utils/config';
 
 const Home = () => {
+
+        const mktRef = useRef(0);
 
         // wallet
         const wallet = useWallet();
@@ -38,29 +40,24 @@ const Home = () => {
         const [provider, connection] = GetProvider(wallet, network);
         const publicKey = provider.wallet.publicKey;
 
-        const [inputValue, setInputValue] = useState('');
-
-        function updateInputValue(evt) {
-            setInputValue( evt.target.value );
-        }
-            
 
         async function onClick(event) {
             
             try{
-                const result = await airdrop(wallet, network);
+                await airdrop(wallet, network);
                 setRefresh(!refresh);
                 enqueueSnackbar("Airdrop successful.", { variant: 'success', autoHideDuration: 3000, });
             }catch(e){
                 enqueueSnackbar("Airdrop Failed : " + e.message, { variant: 'error', autoHideDuration: 3000 });
-   
             }
         }
 
         async function dropMonkey(event) {
 
+            const amount = mktRef.current.value;
+
             try {
-                const result = await airdropSplTokens(inputValue, mktMintPk, mktMintPkBump ,wallet, network);
+                await airdropSplTokens(amount, mktMintPk, mktMintPkBump ,wallet, network);
                 setRefresh(!refresh);
                 enqueueSnackbar("Airdrop successful.", { variant: 'success', autoHideDuration: 3000, });
             } catch (e) {
@@ -103,7 +100,7 @@ const Home = () => {
                                         </Typography>
                                         <Grid container spacing={2}>
                                             <Grid item xs={8}>
-                                        <TextField fullWidth type="number" id="monkey-token" variant="outlined" value={inputValue} onChange={updateInputValue}/>
+                                        <TextField fullWidth type="number" id="monkey-token" variant="outlined" inputRef={mktRef} label="Amount" />
                                             </Grid>
                                             <Grid item xs={4}>
                                             <Button fullWidth size="large" onClick={dropMonkey} variant="outlined" disabled={!publicKey}>GET DUMMY</Button>

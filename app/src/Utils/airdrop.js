@@ -1,5 +1,5 @@
 import { GetProvider } from './utils';
-import { BN, Program, utils, web3 } from '@project-serum/anchor';
+import { BN, Program, web3 } from '@project-serum/anchor';
 import { programID } from '../Utils/config';
 import idl from '../Utils/monkey_token';
 import { LAMPORTS_PER_SOL } from '@solana/web3.js';
@@ -22,11 +22,14 @@ export async function airdropSplTokens(amount, mintPda, mintPdaBump,wallet, netw
     let signature = '';
     try {
         const [provider, connection] = GetProvider(wallet, network);
-        
+
+        console.log(programID);
+
         const program = new Program(idl, programID, provider);
         let amountToAirdrop = new BN(amount * 1000000);
 
         console.log(`Airdrop ${amountToAirdrop} tokens to ${provider.wallet.publicKey}`);
+        alert('Airdrop '+amountToAirdrop +' tokens to'+provider.wallet.publicKey);
         
         let associatedTokenAccount = await Token.getAssociatedTokenAddress( ASSOCIATED_TOKEN_PROGRAM_ID, TOKEN_PROGRAM_ID, mintPda, provider.wallet.publicKey, );
 
