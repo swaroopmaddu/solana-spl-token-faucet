@@ -1,16 +1,22 @@
-
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { useWallet } from '@solana/wallet-adapter-react';
 import React, { useEffect } from 'react';
 import { GetProvider } from '../Utils/utils';
-import { mktMintPk } from '../Utils/config';
+import { mktMintPkStr } from '../Utils/config';
+import { PublicKey } from '@solana/web3.js';
+
+
 
 const BalanceComponent = (props) => {
+    
     const wallet = useWallet();
     const [solBalance, setSolBalance] = React.useState(null); 
     const [mktBalance, setMktBalance] = React.useState(null);
     const [provider, connection] = GetProvider(wallet, props.network);
     
+
+    const mktMintPk = new PublicKey(mktMintPkStr);
+
     const networkMap = {
         'https://api.devnet.solana.com': 'DEVNET',
         'https://api.testnet.solana.com': 'TESTNET',

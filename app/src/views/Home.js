@@ -14,15 +14,24 @@ import { airdrop, airdropSplTokens} from '../Utils/airdrop';
 import { useSnackbar } from 'notistack';
 import { GetProvider } from '../Utils/utils';
 import BalanceComponent from '../Components/BalanceComponent';
-import { mktMintPk, mktMintPkBump } from '../Utils/config';
+import { mktMintPkStr, mktMintPkBump,programIdStr } from '../Utils/config';
+import { PublicKey } from '@solana/web3.js';
 
 const Home = () => {
 
         const mktRef = useRef(0);
 
-        // wallet
+        // Pubkeys
+        const mktMintPk = new PublicKey(mktMintPkStr);
+        const programId = new PublicKey(programIdStr);
+
+        console.log(programId);
+        console.log(mktMintPk);
+
+        // Wallet
         const wallet = useWallet();
 
+        
         const theme = createTheme();
         const { enqueueSnackbar } = useSnackbar();
 
@@ -37,7 +46,7 @@ const Home = () => {
             setNetwork(event.target.value);
             setRefresh(Math.random());
         };
-        const [provider, connection] = GetProvider(wallet, network);
+        const [provider, ] = GetProvider(wallet, network);
         const publicKey = provider.wallet.publicKey;
 
 
@@ -57,7 +66,7 @@ const Home = () => {
             const amount = mktRef.current.value;
 
             try {
-                await airdropSplTokens(amount, mktMintPk, mktMintPkBump ,wallet, network);
+                await airdropSplTokens(amount, mktMintPk, mktMintPkBump, wallet, network, programId);
                 setRefresh(!refresh);
                 enqueueSnackbar("Airdrop successful.", { variant: 'success', autoHideDuration: 3000, });
             } catch (e) {
