@@ -19,8 +19,7 @@ const BalanceComponent = (props) => {
 
     const networkMap = {
         'https://api.devnet.solana.com': 'DEVNET',
-        'https://api.testnet.solana.com': 'TESTNET',
-        'http://127.0.0.1:8899': 'LOCALNET'
+        'https://api.testnet.solana.com': 'TESTNET'
     }
 
     async function checkBalance() {

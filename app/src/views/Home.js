@@ -62,17 +62,23 @@ const Home = () => {
         }
 
         async function dropMonkey(event) {
+            event.preventDefault();
 
             const amount = mktRef.current.value;
 
-            try {
-                await airdropSplTokens(amount, mktMintPk, mktMintPkBump, wallet, network, programId);
-                setRefresh(!refresh);
-                enqueueSnackbar("Airdrop successful.", { variant: 'success', autoHideDuration: 3000, });
-            } catch (e) {
-                enqueueSnackbar("Airdrop Failed : " + e.message, { variant: 'error', autoHideDuration: 3000 });
+            if(network === 'https://api.devnet.solana.com'){
 
-            } 
+                try {
+                    await airdropSplTokens(amount, mktMintPk, mktMintPkBump, wallet, network, programId);
+                    setRefresh(!refresh);
+                    enqueueSnackbar("Airdrop successful.", { variant: 'success', autoHideDuration: 3000, });
+                } catch (e) {
+                    enqueueSnackbar("Airdrop Failed : " + e.message, { variant: 'error', autoHideDuration: 3000 });
+
+                } 
+            } else {
+                enqueueSnackbar("Airdrop Failed : Only available on devnet", { variant: 'error', autoHideDuration: 3000 });
+            }
 
         }
 
@@ -90,14 +96,13 @@ const Home = () => {
                                         </Typography>
                                         <Select fullWidth label="Select Network" name="network" id="network" value={network} onChange={handleChange}>
                                             <MenuItem value={'https://api.devnet.solana.com'}> <em>DEVNET</em> </MenuItem>
-                                            <MenuItem value={'http://127.0.0.1:8899'}> <em>LOCALNET</em> </MenuItem>
                                             <MenuItem value={'https://api.testnet.solana.com'}> <em>TESTNET</em> </MenuItem>
                                         </Select>
                                 <br/>
                                     <Typography sx={{marginTop:2,fontSize: 18,fontWeight:800,color:'black' }} gutterBottom>
                                         SOL AIRDROP
                                     </Typography>
-                                    <Typography sx={{fontSize: 13,}} color="text.secondary" gutterBottom>
+                                    <Typography sx={{fontSize: 13,} } color="text.secondary" gutterBottom>
                                         Receive 1 SOL 
                                     </Typography>
                                     <Button fullWidth variant="outlined" onClick={onClick} disabled={!publicKey} >GET 1 SOL</Button>
@@ -112,7 +117,7 @@ const Home = () => {
                                         <TextField fullWidth type="number" id="monkey-token" variant="outlined" inputRef={mktRef} label="Amount" />
                                             </Grid>
                                             <Grid item xs={4}>
-                                            <Button fullWidth size="large" onClick={dropMonkey} variant="outlined" disabled={!publicKey}>GET DUMMY</Button>
+                                            <Button fullWidth size="large" onClick={dropMonkey} variant="outlined" disabled={!publicKey} sx={{padding:'13px'}} >GET MKT Tokens</Button>
                                             </Grid>
                                         </Grid>
                                 </Card>
